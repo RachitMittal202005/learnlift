@@ -2,48 +2,22 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { AlertTriangle, Users, TrendingUp, Brain, Bell, Search } from "lucide-react";
+import { AlertTriangle, Users, TrendingUp, Brain, Bell, Search, Plus, UserMinus } from "lucide-react";
 import { StudentCard } from "./StudentCard";
 import { RiskAssessment } from "./RiskAssessment";
 import { PerformanceChart } from "./PerformanceChart";
-
-const mockStudents = [
-  {
-    id: 1,
-    name: "Emma Rodriguez",
-    grade: "10th Grade",
-    riskLevel: "low" as const,
-    performance: 92,
-    attendance: 98,
-    engagement: 88,
-    avatar: "/placeholder.svg",
-    recentActivity: "Completed Advanced Math Module"
-  },
-  {
-    id: 2,
-    name: "Marcus Johnson",
-    grade: "11th Grade", 
-    riskLevel: "medium" as const,
-    performance: 78,
-    attendance: 85,
-    engagement: 65,
-    avatar: "/placeholder.svg",
-    recentActivity: "Missed 3 assignments this week"
-  },
-  {
-    id: 3,
-    name: "Aisha Patel",
-    grade: "9th Grade",
-    riskLevel: "high" as const,
-    performance: 65,
-    attendance: 72,
-    engagement: 45,
-    avatar: "/placeholder.svg",
-    recentActivity: "No login for 5 days"
-  }
-];
+import { SearchStudentsModal } from "./SearchStudentsModal";
+import { AlertsPanel } from "./AlertsPanel";
+import { AddStudentModal } from "./AddStudentModal";
+import { useStudents } from "@/contexts/StudentsContext";
 
 export const Dashboard = () => {
+  const { students, alerts } = useStudents();
+  
+  const activeAlerts = alerts.filter(alert => !alert.resolved);
+  const atRiskStudents = students.filter(student => student.riskLevel === "high" || student.riskLevel === "medium");
+  const averagePerformance = students.reduce((sum, student) => sum + student.performance, 0) / students.length;
+  const averageEngagement = students.reduce((sum, student) => sum + student.engagement, 0) / students.length;
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -58,14 +32,26 @@ export const Dashboard = () => {
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            <Button variant="outline" size="sm">
-              <Search className="w-4 h-4 mr-2" />
-              Search Students
-            </Button>
-            <Button size="sm" className="bg-gradient-primary">
-              <Bell className="w-4 h-4 mr-2" />
-              Alerts (3)
-            </Button>
+            <SearchStudentsModal>
+              <Button variant="outline" size="sm">
+                <Search className="w-4 h-4 mr-2" />
+                Search Students
+              </Button>
+            </SearchStudentsModal>
+            
+            <AlertsPanel>
+              <Button size="sm" className="bg-gradient-primary">
+                <Bell className="w-4 h-4 mr-2" />
+                Alerts ({activeAlerts.length})
+              </Button>
+            </AlertsPanel>
+            
+            <AddStudentModal>
+              <Button size="sm" variant="outline">
+                <Plus className="w-4 h-4 mr-2" />
+                Add Student
+              </Button>
+            </AddStudentModal>
           </div>
         </div>
       </div>
@@ -80,8 +66,13 @@ export const Dashboard = () => {
               <Users className="w-4 h-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">1,247</div>
-              <p className="text-xs text-muted-foreground">+12 from last month</p>
+              <div className="text-2xl font-bold">{students.length}</div>
+              <p className="text-xs text-muted-foreground">+{students.filter(s => {
+                const enrollDate = new Date(s.enrollmentDate || '2024-01-01');
+                const lastMonth = new Date();
+                lastMonth.setMonth(lastMonth.getMonth() - 1);
+                return enrollDate > lastMonth;
+              }).length} from last month</p>
             </CardContent>
           </Card>
 
@@ -91,7 +82,7 @@ export const Dashboard = () => {
               <AlertTriangle className="w-4 h-4 text-warning" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">47</div>
+              <div className="text-2xl font-bold">{atRiskStudents.length}</div>
               <p className="text-xs text-warning-foreground">Requires immediate attention</p>
             </CardContent>
           </Card>
@@ -102,8 +93,11 @@ export const Dashboard = () => {
               <TrendingUp className="w-4 h-4 text-success" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">84.2%</div>
-              <p className="text-xs text-success-foreground">+2.1% improvement</p>
+              <div className="text-2xl font-bold">{averagePerformance.toFixed(1)}%</div>
+              <p className="text-xs text-success-foreground">
+                {averagePerformance > 80 ? '+' : ''}
+                {(averagePerformance - 80).toFixed(1)}% from target
+              </p>
             </CardContent>
           </Card>
 
@@ -113,7 +107,7 @@ export const Dashboard = () => {
               <Brain className="w-4 h-4 text-info" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">91.7%</div>
+              <div className="text-2xl font-bold">{averageEngagement.toFixed(1)}%</div>
               <p className="text-xs text-info-foreground">Active participation</p>
             </CardContent>
           </Card>
@@ -128,7 +122,7 @@ export const Dashboard = () => {
               <Button variant="outline" size="sm">View All</Button>
             </div>
             <div className="space-y-4">
-              {mockStudents.map((student) => (
+              {students.slice(0, 5).map((student) => (
                 <StudentCard key={student.id} student={student} />
               ))}
             </div>

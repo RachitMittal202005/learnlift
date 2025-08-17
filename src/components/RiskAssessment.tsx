@@ -3,6 +3,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { AlertTriangle, Clock, CheckCircle, ArrowRight } from "lucide-react";
 
+import { useStudents } from "@/contexts/StudentsContext";
+
 const riskAlerts = [
   {
     id: 1,
@@ -34,6 +36,8 @@ const riskAlerts = [
 ];
 
 export const RiskAssessment = () => {
+  const { alerts } = useStudents();
+  const activeAlerts = alerts.filter(alert => !alert.resolved).slice(0, 3);
   const getSeverityIcon = (severity: string) => {
     switch (severity) {
       case "high":
@@ -69,7 +73,7 @@ export const RiskAssessment = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {riskAlerts.map((alert) => (
+        {activeAlerts.map((alert) => (
           <div key={alert.id} className="p-3 rounded-lg border bg-card hover:shadow-soft transition-all duration-200">
             <div className="flex items-start justify-between space-x-2">
               <div className="flex items-start space-x-2 flex-1">

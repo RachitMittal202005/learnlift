@@ -1,27 +1,30 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { AlertTriangle, TrendingUp, Users, Clock } from "lucide-react";
+import { AlertTriangle, TrendingUp, Users, Clock, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-interface Student {
-  id: number;
-  name: string;
-  grade: string;
-  riskLevel: "low" | "medium" | "high";
-  performance: number;
-  attendance: number; 
-  engagement: number;
-  avatar: string;
-  recentActivity: string;
-}
+import { useStudents, Student } from "@/contexts/StudentsContext";
+import { useToast } from "@/hooks/use-toast";
 
 interface StudentCardProps {
   student: Student;
 }
 
 export const StudentCard = ({ student }: StudentCardProps) => {
+  const { removeStudent } = useStudents();
+  const { toast } = useToast();
+  
+  const handleRemoveStudent = () => {
+    if (window.confirm(`Are you sure you want to remove ${student.name} from the system?`)) {
+      removeStudent(student.id);
+      toast({
+        title: "Student Removed",
+        description: `${student.name} has been removed from the system.`,
+      });
+    }
+  };
   const getRiskColor = (level: string) => {
     switch (level) {
       case "high":
@@ -53,7 +56,7 @@ export const StudentCard = ({ student }: StudentCardProps) => {
       <CardContent className="p-4">
         <div className="flex items-start justify-between space-x-4">
           {/* Student Info */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-3 flex-1">
             <Avatar className="w-12 h-12">
               <AvatarImage src={student.avatar} alt={student.name} />
               <AvatarFallback className="bg-gradient-primary text-primary-foreground font-semibold">
@@ -110,6 +113,19 @@ export const StudentCard = ({ student }: StudentCardProps) => {
                 className="h-1"
               />
             </div>
+          </div>
+
+          {/* Actions */}
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleRemoveStudent}
+              className="text-danger hover:text-danger hover:bg-danger-light p-2"
+              title="Remove student"
+            >
+              <Trash2 className="w-4 h-4" />
+            </Button>
           </div>
         </div>
       </CardContent>

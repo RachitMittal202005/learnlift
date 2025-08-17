@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from "recharts";
 import { TrendingUp } from "lucide-react";
+import { useStudents } from "@/contexts/StudentsContext";
 
 const performanceData = [
   { month: "Jan", performance: 78, engagement: 82 },
@@ -11,13 +12,14 @@ const performanceData = [
   { month: "Jun", performance: 84, engagement: 87 }
 ];
 
-const riskDistribution = [
-  { category: "Low Risk", count: 892, color: "hsl(var(--success))" },
-  { category: "Medium Risk", count: 308, color: "hsl(var(--warning))" },
-  { category: "High Risk", count: 47, color: "hsl(var(--danger))" }
-];
-
 export const PerformanceChart = () => {
+  const { students } = useStudents();
+  
+  const riskDistribution = [
+    { category: "Low Risk", count: students.filter(s => s.riskLevel === 'low').length, fill: "hsl(var(--success))" },
+    { category: "Medium Risk", count: students.filter(s => s.riskLevel === 'medium').length, fill: "hsl(var(--warning))" },
+    { category: "High Risk", count: students.filter(s => s.riskLevel === 'high').length, fill: "hsl(var(--danger))" }
+  ];
   return (
     <div className="space-y-6">
       {/* Performance Trends */}
