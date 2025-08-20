@@ -88,7 +88,7 @@ Many teachers and schools lack a systematic, data-driven way to quickly identify
 5.This directly solves the problem of invisible student struggles, supporting teachers in proactively safeguarding all students’ academic progression and success.
 
 
-## The technologies/tools used in your prototype.
+## The technologies/tools used in my prototype.
 
 1. Frontend Library/Framework
 
@@ -156,3 +156,12 @@ Frontend Form Validation: Checks for required fields (name, grade, email) in Add
 7. Potential Design System
 Based on code (Dialog, Badge, Progress, etc.), UI elements are likely derived from a component library (Radix UI, Shadcn UI, or similar), though not explicitly named.
 
+
+## Screenshots for better understanding.
+
+<form>
+    <input type="file" name="image"/>
+</form><img width="1440" height="900" alt="Dashboard" src="https://github.com/user-attachments/assets/c74bcf21-f1a7-4f59-bd60-762d0b701ae9" />
+<img width="1440" height="900" alt="Search students " src="https://github.com/user-attachments/assets/090c4f74-bc96-4d2c-bec4-8d8a2a04edaa" />
+<img width="1440" height="900" alt="Add students" src="https://github.com/user-attachments/assets/ce8fd80b-5756-4b09-8e5e-16267d5ad6e3" />
+<img width="1440" height="900" alt="Alert management" src="https://github.com/user-attachments/assets/a92eb96e-f4e3-4a2e-a3f6-cde7b02ce35f" />
