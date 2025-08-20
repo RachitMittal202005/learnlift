@@ -1,18 +1,23 @@
-# Welcome to your Lovable project
+## Welcome to "LearnLift" a Student Progress and Risk Monitoring System
 
-## Project info
 
-**URL**: https://lovable.dev/projects/805c93ce-7c9d-4a68-8633-2aa3565aa7d8
+This project is a web-based application designed to help teachers monitor and support their students’ academic success. It provides a centralized dashboard that tracks student performance, attendance, and engagement in real time, enabling early identification of students who may be at risk of falling behind or failing.
 
-## How can I edit this code?
+By combining data-driven risk assessment with an intuitive user interface, teachers can quickly spot warning signs and take timely action, such as reaching out to parents, scheduling tutoring, or organizing check-in meetings. The system also offers powerful search, filter, and alert management tools to streamline classroom management and improve student outcomes.
 
-There are several ways of editing your application.
+Built with React, this prototype showcases key features including:
 
-**Use Lovable**
+Student profile management with detailed academic and contact information
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/805c93ce-7c9d-4a68-8633-2aa3565aa7d8) and start prompting.
+Visual risk level indicators (low, medium, high) based on performance and engagement metrics
 
-Changes made via Lovable will be committed automatically to this repo.
+Interactive dashboards and charts for monitoring class-wide trends and individual progress
+
+Real-time alerts emphasizing critical student issues requiring immediate attention
+
+Flexible search and filtering capabilities by risk level, grade, and subjects
+
+This project aims to empower educators with actionable insights and efficient workflows to ensure that no student’s struggles go unnoticed, ultimately helping reduce dropout rates and improve academic achievement.
 
 **Use your preferred IDE**
 
